@@ -36,7 +36,7 @@ namespace Exercise6
             Depts = depts;
 
             #endregion
-
+            
             #region Load emps
 
             var e1 = new Emp
@@ -164,7 +164,8 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<Emp> Task1()
         {
-            IEnumerable<Emp> result = null;
+            var methodSyntax = Emps.Where(e => e.Job.Equals("Backend programmer"));
+            IEnumerable<Emp> result =methodSyntax;
             return result;
         }
 
@@ -173,7 +174,9 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<Emp> Task2()
         {
-            IEnumerable<Emp> result = null;
+            var methodSyntax = Emps.Where(e => e.Job.Equals("Frontend programmer") && e.Salary > 1000)
+                                                .OrderByDescending(Emps => Emps.Ename);   
+            IEnumerable<Emp> result = methodSyntax;
             return result;
         }
 
@@ -183,7 +186,7 @@ namespace Exercise6
         /// </summary>
         public static int Task3()
         {
-            int result = 0;
+            int result = Emps.Max(e => e.Salary);
             return result;
         }
 
@@ -192,6 +195,7 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<Emp> Task4()
         {
+            var methodSyntax = Emps.Where(e => e.Salary.Equals(Emps.Max(e2 => e2.Salary)));
             IEnumerable<Emp> result = null;
             return result;
         }
@@ -201,7 +205,8 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task5()
         {
-            IEnumerable<object> result = null;
+            var methodSyntax = Emps.Select(e => new { Nazwisko = e.Ename, Praca = e.Job });
+            IEnumerable<object> result = methodSyntax;
             return result;
         }
 
