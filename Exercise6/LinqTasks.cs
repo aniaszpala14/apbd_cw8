@@ -217,7 +217,17 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task6()
         {
-            IEnumerable<object> result = null;
+            var innerJoin = Depts.Join(
+                Emps,  
+                d => d.Deptno,    
+                e => e.Deptno,  
+                (d, e) => new  
+                {
+                     e.Ename,
+                     e.Job,
+                    d.Dname
+                });
+            IEnumerable<object> result =innerJoin;
             return result;
         }
 
@@ -226,6 +236,7 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task7()
         {
+           // var methodSyntax=Emps.Select(e=>new {Praca =e.Job,liczbaPracownikow = (Emps.Count(e=>e.Job.GroupBy()))}).
             IEnumerable<object> result = null;
             return result;
         }
@@ -236,7 +247,7 @@ namespace Exercise6
         /// </summary>
         public static bool Task8()
         {
-            bool result = false;
+            bool result = Emps.Any(e => e.Job.Equals("Backend programmer"));
             return result;
         }
 
