@@ -236,8 +236,9 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task7()
         {
-           // var methodSyntax=Emps.Select(e=>new {Praca =e.Job,liczbaPracownikow = (Emps.Count(e=>e.Job.GroupBy()))}).
-            IEnumerable<object> result = null;
+            var methodSyntax = Emps.Select(e => new
+                { Praca = e.Job, LiczbaPracownikow = Emps.Count(e2=>e2.Job==e.Job)});
+            IEnumerable<object> result = methodSyntax;
             return result;
         }
 
@@ -257,7 +258,7 @@ namespace Exercise6
         /// </summary>
         public static Emp Task9()
         {
-            Emp result = null;
+            Emp result = Emps.Select(e => e.Job.Equals("Frontend programmer")).FirstOrDefault();;
             return result;
         }
 
