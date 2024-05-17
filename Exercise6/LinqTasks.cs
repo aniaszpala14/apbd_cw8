@@ -258,7 +258,7 @@ namespace Exercise6
         /// </summary>
         public static Emp Task9()
         {
-            Emp result = Emps.Select(e => e.Job.Equals("Frontend programmer")).FirstOrDefault();;
+            Emp result = Emps.Where(e => e.Job.Equals("Frontend programmer")).FirstOrDefault();;
             return result;
         }
 
