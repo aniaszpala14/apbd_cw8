@@ -236,8 +236,7 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task7()
         {
-            var methodSyntax = Emps.Select(e => new
-                { Praca = e.Job, LiczbaPracownikow = Emps.Count(e2=>e2.Job==e.Job)});
+            var methodSyntax = Emps.GroupBy(e => e.Job).Select(e=>e.Count(e.))
             IEnumerable<object> result = methodSyntax;
             return result;
         }
@@ -269,7 +268,8 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task10()
         {
-            IEnumerable<object> result = null;
+            var list = new List<string> { "Brak wartości", null, null };
+            IEnumerable<object> result = Emps.Select(e=> new {Ename=e.Ename,Job=e.Job,Hiredate=e.HireDate}).Union(list);
             return result;
         }
 
