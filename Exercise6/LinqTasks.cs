@@ -259,7 +259,10 @@ namespace Exercise6
         /// </summary>
         public static Emp Task9()
         {
-            Emp result = Emps.Where(e => e.Job.Equals("Frontend programmer")).FirstOrDefault();;
+        
+            var result = Emps.Where(e => e.Job
+                              .Equals("Frontend programmer"))
+                              .OrderByDescending(e=>e.HireDate).FirstOrDefault();
             return result;
         }
 
@@ -318,7 +321,7 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<Emp> Task12()
         {
-            IEnumerable<Emp> result = null;
+            IEnumerable<Emp> result = CustomExtensionMethods.mojmetoda(Emps);
             return result;
         }
 
@@ -331,8 +334,11 @@ namespace Exercise6
         /// </summary>
         public static int Task13(int[] arr)
         {
-            int result = 0;
-            //result=
+            int result =arr.GroupBy(x => x)
+                            .Where(s => s.Count() % 2 != 0)
+                            .Select(s => s.Key)
+                            .Single();
+          
             return result;
         }
 
@@ -342,14 +348,27 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<Dept> Task14()
         {
-            IEnumerable<Dept> result = null;
-          //  result = Depts.GroupBy(d => d.Deptno).Where(d2 => d2.Count() == 5 || d2.Count() == 0);
+            IEnumerable<Dept> result = Depts.GroupJoin(Emps, 
+                                                         d => d.Deptno,
+                                                         e => e.Deptno,
+                                                        (dept, emps) => new { Dept = dept, EmpCount = emps.Count() } )
+                                                         .Where(j => j.EmpCount == 5 || j.EmpCount == 0) 
+                                                         .Select(joinResult => joinResult.Dept) 
+                                                         .OrderBy(dept => dept.Dname); 
+
             return result;
         }
     }
 
     public static class CustomExtensionMethods
     {
-        //Put your extension methods here
+        public static IEnumerable<Emp> mojmetoda(IEnumerable<Emp> emp)
+        {
+            var result = emp
+                .Where(e => emp.Any(pod => pod.Mgr!=null && pod.Mgr.Empno == e.Empno))
+                .OrderBy(e => e.Ename)
+                .ThenByDescending(e => e.Salary);
+            return result;
+        }
     }
 }
