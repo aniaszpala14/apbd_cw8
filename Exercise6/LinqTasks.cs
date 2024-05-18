@@ -1,4 +1,5 @@
-﻿using Exercise6.Models;
+﻿using System.ComponentModel.Design.Serialization;
+using Exercise6.Models;
 
 namespace Exercise6
 {
@@ -236,7 +237,8 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task7()
         {
-            var methodSyntax = Emps.GroupBy(e => e.Job).Select(e=>e.Count(e.))
+            var methodSyntax = Emps.GroupBy(e => e.Job)
+                .Select(g => new { Praca = g.Key, LiczbaPracownikow = g.Count() });
             IEnumerable<object> result = methodSyntax;
             return result;
         }
@@ -268,8 +270,14 @@ namespace Exercise6
         /// </summary>
         public static IEnumerable<object> Task10()
         {
-            var list = new List<string> { "Brak wartości", null, null };
-            IEnumerable<object> result = Emps.Select(e=> new {Ename=e.Ename,Job=e.Job,Hiredate=e.HireDate}).Union(list);
+            var result = Emps.Select(e => new { e.Ename, e.Job, e.HireDate })
+                                                    .Union(new[]
+                                                    {
+                                                        new
+                                                        {
+                                                            Ename = "Brak wartości", Job = (string)null, HireDate = (DateTime?)null
+                                                        }
+                                                    });
             return result;
         }
 
@@ -287,6 +295,17 @@ namespace Exercise6
         public static IEnumerable<object> Task11()
         {
             IEnumerable<object> result = null;
+            result = Emps.GroupBy(e => e.Deptno)
+                         .Where(g => g.Count() > 1)
+                         .Join(
+                                Depts,
+                                g => g.Key,
+                                d => d.Deptno,
+                                (g, d) => new
+                                {
+                                  name = d.Dname,
+                                  numOfEmployees = g.Count()
+                                });
             return result;
         }
 
@@ -324,7 +343,7 @@ namespace Exercise6
         public static IEnumerable<Dept> Task14()
         {
             IEnumerable<Dept> result = null;
-            //result =
+          //  result = Depts.GroupBy(d => d.Deptno).Where(d2 => d2.Count() == 5 || d2.Count() == 0);
             return result;
         }
     }
